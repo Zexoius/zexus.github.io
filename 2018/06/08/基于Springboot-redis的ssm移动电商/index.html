@@ -115,12 +115,16 @@
 <meta property="og:site_name" content="Zexus">
 <meta property="og:description" content="本篇仅作为学习笔记，记录遇到的问题与解决办法。（不定期更新）">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="e:/blog/blog/themes/next/source/images/ssmLearning.PNG">
-<meta property="og:updated_time" content="2018-06-09T03:48:07.402Z">
+<meta property="og:image" content="http://pa6r78di4.bkt.clouddn.com/projectStructure.PNG">
+<meta property="og:image" content="http://pa6r78di4.bkt.clouddn.com/create1.PNG">
+<meta property="og:image" content="http://pa6r78di4.bkt.clouddn.com/create2.PNG">
+<meta property="og:image" content="http://pa6r78di4.bkt.clouddn.com/how%20to%20create.PNG">
+<meta property="og:image" content="http://pa6r78di4.bkt.clouddn.com/database.png">
+<meta property="og:updated_time" content="2018-06-12T01:48:40.417Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="基于Springboot+redis的ssm移动电商">
 <meta name="twitter:description" content="本篇仅作为学习笔记，记录遇到的问题与解决办法。（不定期更新）">
-<meta name="twitter:image" content="e:/blog/blog/themes/next/source/images/ssmLearning.PNG">
+<meta name="twitter:image" content="http://pa6r78di4.bkt.clouddn.com/projectStructure.PNG">
 
 
 
@@ -436,14 +440,16 @@
 
       
         <p>本篇仅作为学习笔记，记录遇到的问题与解决办法。（不定期更新）<a id="more"></a><br><br>本次主要目的为搭建一个基于Springboot的ssm（Spring+SpringMVC+Mybatis）的maven项目，数据库使用Mysql，开发工具为IDEA。<br><br>Springboot只是为了省略令人头疼的模式化配置，大大缩减了开发时间提高效率，至于如何的提高，入手后和原ssm相比便会知道</p>
-<h4 id="Project-Structure"><a href="#Project-Structure" class="headerlink" title="Project Structure"></a>Project Structure</h4><p><img src="E:/blog/blog/themes/next/source/images/ssmLearning.PNG" alt="Project Structure"></p>
+<h4 id="Project-Structure"><a href="#Project-Structure" class="headerlink" title="Project Structure"></a>Project Structure</h4><p><img src="http://pa6r78di4.bkt.clouddn.com/projectStructure.PNG" alt="Project Structure"></p>
 <p><br></p>
 <h4 id="搭建过程"><a href="#搭建过程" class="headerlink" title="搭建过程"></a>搭建过程</h4><p>创建Springboot项目，IDEA号称开发Java最好的工具也不是没有道理的。<br></p>
 <ol>
-<li><p>Create New Project / 进入<code>http://start.spring.io</code>创建自己项目的详情信息。<br><img src="" alt=""><br>mavenProject，配置自己本地的JDK。<br>在选择Dependencies的时候一定要勾选web，否则启动不了。<br><img src="" alt=""></p>
-</li>
-<li><p>创建成功后在根目录下一次创建如下几个包，体现是MVC架构<br><br><code>controller</code>、<code>dao</code>，<code>service</code>，<code>entity</code>以及经常用到的工具包<code>utils</code>。<br><br><b><em>-<code>controller</code></em></b>，顾名思义，负责控制接收与用户输入的并调用<code>service</code>层的业务逻辑，（拦截）获取数据、传递数据给视图层（浏览器页面）用于视觉呈现。一般用<code>@Controller</code>或者<code>@RestController</code>来表示该类为控制层。当然这两类也是有一定的区别。比如你只想做一个简单测试，返回一串 JSON 数据，但是你用的是<code>@Controller</code>，这时候你可能会报错——关于视图层的错误（具体异常也是记得不太清了(っ °Д °;)っ ），解决办法为：将<code>@Controller</code>注释替换为<code>@RestController</code>。我们分析springboot源码，可以发现这两个注释间有一点区别就是，后者比前者多一个<code>@ResponseBody</code>（你当然可以添加<code>@ResponseBody</code>，但是出于懒以及要后面大量使用<code>@ResponseBody</code>,所以我替换了。。）。如此一来就可以不经过视图层解析而单单返回数据（JSON、xml…）。<br><br><b><em>-<code>dao</code></em></b>层，最容易理解了，数据访问层，负责数据库操作。<code>service</code>调用<code>dao</code>，<code>service</code>就new 一个<code>dao</code>对象调用。事实上这儿我有一个问题，MVC设计模式为现在主流编程方式（当然也包括前端），实际上MVC本身不属于设计模式，它讲述的是一种结构，最终的目的是解耦，最终流程走向为：表示层调用控制层，控制层调用业务层，业务层调用数据访问层。对，目的是为了解耦，但是如果直接在业务层new一个<code>dao</code>对象来访问数据库，这不就存在了具体的对象而非引用造成耦合的情况吗，万一这个对象不存在了，我还是需要修改业务逻辑。所以并未完全实现解耦。关于这点我还是要继续学习。<br><br><b><em>-<code>service</code></em></b>层，负责处理具体的业务逻辑、操作以及与数据层的交互。<br><br><b><em>-<code>entity</code></em></b>层，实体嘛，当然是实体类啊，字段与数据库最好是对应的，不然不太熟的话，很容易弄混，另外数据库字段的类型，与实体类也有讲究，比如varchar = string, smallint = int/integer…需要注意的是sql.timestamp这类类型变量，也许你的数据库中有两个需要设置时间的地方，比如注册时间以及最后登录时间，注册时间不用说是currentTime，但是最后注册时间不能，同张表只能有一个变量是currentTime，另一个只能设置为NULL，当然这里最后编译的时候还可能会出现一个错误，比如00：00：00-000….（(￣▽￣)”老年人记性不要在意），这里你需要在你的数据库配置url那儿尾部加上<code>&amp;zeroDateTimeBehavior=convertToNull</code>即可完美解决。<br><br><b><em>-<code>utils</code></em></b>工具包，内含后面用到的分页啊，md5摘要加密啊等等，因为是通用的，所以最后还是将其分离出供其他类引用，贯彻MVC结构。<br></p>
-</li>
+<li>Create New Project / 进入<code>http://start.spring.io</code>创建自己项目的详情信息。<br><img src="http://pa6r78di4.bkt.clouddn.com/create1.PNG" alt="createMethod1"></li>
+</ol>
+<hr>
+<p><img src="http://pa6r78di4.bkt.clouddn.com/create2.PNG" alt="createMethod2"><br><img src="http://pa6r78di4.bkt.clouddn.com/how%20to%20create.PNG" alt="createMethod3"><br>mavenProject，配置自己本地的JDK。<br>在选择Dependencies的时候一定要勾选web，否则启动不了。</p>
+<ol start="2">
+<li>创建成功后在根目录下一次创建如下几个包，体现是MVC架构<br><br><code>controller</code>、<code>dao</code>，<code>service</code>，<code>entity</code>以及经常用到的工具包<code>utils</code>。<br><br><b><em>-<code>controller</code></em></b>，顾名思义，负责控制接收与用户输入的并调用<code>service</code>层的业务逻辑，（拦截）获取数据、传递数据给视图层（浏览器页面）用于视觉呈现。一般用<code>@Controller</code>或者<code>@RestController</code>来表示该类为控制层。当然这两类也是有一定的区别。比如你只想做一个简单测试，返回一串 JSON 数据，但是你用的是<code>@Controller</code>，这时候你可能会报错——关于视图层的错误（具体异常也是记得不太清了(っ °Д °;)っ ），解决办法为：将<code>@Controller</code>注释替换为<code>@RestController</code>。我们分析springboot源码，可以发现这两个注释间有一点区别就是，后者比前者多一个<code>@ResponseBody</code>（你当然可以添加<code>@ResponseBody</code>，但是出于懒以及要后面大量使用<code>@ResponseBody</code>,所以我替换了。。）。如此一来就可以不经过视图层解析而单单返回数据（JSON、xml…）。<br><br><b><em>-<code>dao</code></em></b>层，最容易理解了，数据访问层，负责数据库操作。<code>service</code>调用<code>dao</code>，<code>service</code>就new 一个<code>dao</code>对象调用。事实上这儿我有一个问题，MVC设计模式为现在主流编程方式（当然也包括前端），实际上MVC本身不属于设计模式，它讲述的是一种结构，最终的目的是解耦，最终流程走向为：表示层调用控制层，控制层调用业务层，业务层调用数据访问层。对，目的是为了解耦，但是如果直接在业务层new一个<code>dao</code>对象来访问数据库，这不就存在了具体的对象而非引用造成耦合的情况吗，万一这个对象不存在了，我还是需要修改业务逻辑。所以并未完全实现解耦。关于这点我还是要继续学习。<br><br><b><em>-<code>service</code></em></b>层，负责处理具体的业务逻辑、操作以及与数据层的交互。<br><br><b><em>-<code>entity</code></em></b>层，实体嘛，当然是实体类啊，字段与数据库最好是对应的，不然不太熟的话，很容易弄混，另外数据库字段的类型，与实体类也有讲究，比如varchar = string, smallint = int/integer…需要注意的是sql.timestamp这类类型变量，也许你的数据库中有两个需要设置时间的地方，比如注册时间以及最后登录时间，注册时间不用说是currentTime，但是最后注册时间不能，同张表只能有一个变量是currentTime，另一个只能设置为NULL，当然这里最后编译的时候还可能会出现一个错误，比如00：00：00-000….（(￣▽￣)”老年人记性不要在意），这里你需要在你的数据库配置url那儿尾部加上<code>&amp;zeroDateTimeBehavior=convertToNull</code>即可完美解决。<br><br><b><em>-<code>utils</code></em></b>工具包，内含后面用到的分页啊，md5摘要加密啊等等，因为是通用的，所以最后还是将其分离出供其他类引用，贯彻MVC结构。<br></li>
 <li>最后需要配置你的数据库。等下，你不是说Springboot免去一大堆配置吗，为什么还要配置？！的确，但是必要的配置你还是要去配的，数据库就是其中之一。贴上自己的代码：<pre><code>#MysqlConfig
 spring.datasource.url=jdbc:mysql://localhost:3306/ori?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull
 spring.datasource.username=root  //账号密码字段自定义(注释方式非://而是#)
@@ -469,7 +475,7 @@ public String sayHello() {
 </li>
 </ol>
 <p>当然前面我也提过另一种写法，可自己试试。浏览器或postman测试，完结，撒花！（这才多少你就结束了，你也太快了吧？当然不，我说基本测试结束…）<br><br>当然，也有的小伙伴不想用内置的，考虑到以后要分布式外接tomcat，行，没问题，配一个即可~不过本项目为单机，分布式以后还要重构，先从入门说起。一开始我是头铁不想用内置tomcat，自己重新搞一个，结果跑的时候会报错，这是我就奇怪了，正常启动但是页面不显示什么鬼？？我看了一下日志：某个tomcat的jar包未被加载。我在怀疑是不是版本号问题，因为我用的是本地tomcat7.0版本，而内置tomcat版本号为8.5版本，导致找不到使用默认版本，我还能说啥？：）<br><br>总结：外置tomcat版本号8.5最好。（我也是第一次用所以虚的hin）</p>
-<h4 id="第一个用户模块"><a href="#第一个用户模块" class="headerlink" title="第一个用户模块"></a>第一个用户模块</h4><p>（咳咳，敲黑板）终于开始吗？(●’◡’●)想想也是有点小鸡冻，不用再听你唠叨了？我觉得完全不太现实，这才多少？先把第一个模块完成好不好，有没有职业操守？街坊邻居都会怎么说你？（omit 10000+）,后期我会开源到github上，想学习的盆友帮忙fork或者star一下（右上角传送门），感激不尽    ~(￣▽￣)~<em> <br><br>**</em>    注：移动端大佬可能看不到，即使调整为desktop site模式可能也无济于事，还是需要PC端的。。<br><br>按照个人习惯，我是喜欢先建表后码。开工了！<br><br>新建user表，如下：<br><img src="" alt="数据库字段"><br>注意我之前提到的两个timestamp问题。另外我这人比较坑，运气背，竟然还是遇到了百年没有的104？(8还是6来着…记不清了，总之就是不予访问数据库，密码不符)错误，这个错误在我跑项目的时候忽然蹦出来的，破天荒的，就像龙卷风一样毫无防备（It does’t work…Why?……It works..Why？？〒▽〒）详情解决请看我另一篇博客，解决数据库104?问题。<br><br>接下来，配置resource目录下的<code>application.properties</code>，之前代码也贴过，视个人情况定。<br><br>新建工具类Result于<code>utils</code>包下，为了把数据进行进一步包装，按照我们想要的格式返还。<br></p>
+<h4 id="第一个用户模块"><a href="#第一个用户模块" class="headerlink" title="第一个用户模块"></a>第一个用户模块</h4><p>（咳咳，敲黑板）终于开始吗？(●’◡’●)想想也是有点小鸡冻，不用再听你唠叨了？我觉得完全不太现实，这才多少？先把第一个模块完成好不好，有没有职业操守？街坊邻居都会怎么说你？（omit 10000+）,后期我会开源到github上，想学习的盆友帮忙fork或者star一下（右上角传送门），感激不尽    ~(￣▽￣)~<em> <br><br>**</em>    注：移动端大佬可能看不到，即使调整为desktop site模式可能也无济于事，还是需要PC端的。。<br><br>按照个人习惯，我是喜欢先建表后码。开工了！<br><br>新建user表，如下：<br><img src="http://pa6r78di4.bkt.clouddn.com/database.png" alt="数据库字段"><br>注意我之前提到的两个timestamp问题。另外我这人比较坑，运气背，竟然还是遇到了百年没有的104？(8还是6来着…记不清了，总之就是不予访问数据库，密码不符)错误，这个错误在我跑项目的时候忽然蹦出来的，破天荒的，就像龙卷风一样毫无防备（It does’t work…Why?……It works..Why？？〒▽〒）详情解决请看我另一篇博客，解决数据库104?问题。<br><br>接下来，配置resource目录下的<code>application.properties</code>，之前代码也贴过，视个人情况定。<br><br>新建工具类Result于<code>utils</code>包下，为了把数据进行进一步包装，按照我们想要的格式返还。<br></p>
 <p><pre><code>public class Result implements Serializable {<br>    private int status;<br>    private String msg;<br>    private Object data;</code></pre></p>
 <pre><code>public int getStatus() {
     return status;
@@ -550,6 +556,22 @@ public String toString() {
       
 
       
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/06/12/分布式Springboot/" rel="prev" title="微服务+分布式">
+                微服务+分布式 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
 
       
       
@@ -626,7 +648,7 @@ public String toString() {
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-count">2</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -637,7 +659,7 @@ public String toString() {
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-count">1</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -648,7 +670,7 @@ public String toString() {
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-count">3</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -736,7 +758,7 @@ public String toString() {
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">2.4k</span>
+    <span title="Site words total count">3.7k</span>
   
 </div>
 
