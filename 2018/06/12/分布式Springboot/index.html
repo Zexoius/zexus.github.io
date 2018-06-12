@@ -94,7 +94,7 @@
 
 
 
-  <meta name="keywords" content="zexus, Zexus, hexo" />
+  <meta name="keywords" content="微服务框架,分布式,ZooKeeper,dubbo," />
 
 
 
@@ -108,6 +108,7 @@
 
 
 <meta name="description" content="最近看微服务与分布式挺火的，自己做一个demo，作为知识储备">
+<meta name="keywords" content="微服务框架,分布式,ZooKeeper,dubbo">
 <meta property="og:type" content="article">
 <meta property="og:title" content="微服务+分布式">
 <meta property="og:url" content="http://zexus.top/2018/06/12/分布式Springboot/index.html">
@@ -115,7 +116,7 @@
 <meta property="og:description" content="最近看微服务与分布式挺火的，自己做一个demo，作为知识储备">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://pa6r54dw6.bkt.clouddn.com/distributed.PNG">
-<meta property="og:updated_time" content="2018-06-12T02:43:51.865Z">
+<meta property="og:updated_time" content="2018-06-12T07:10:19.189Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="微服务+分布式">
 <meta name="twitter:description" content="最近看微服务与分布式挺火的，自己做一个demo，作为知识储备">
@@ -354,6 +355,28 @@
           </span>
 
           
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/分布式/" itemprop="url" rel="index">
+                    <span itemprop="name">分布式</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
             
@@ -375,7 +398,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  1,294
+                  1,619
                 </span>
               
 
@@ -391,7 +414,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  4
+                  6
                 </span>
               
             </div>
@@ -412,12 +435,12 @@
       
 
       
-        <p>最近看微服务与分布式挺火的，自己做一个demo，作为知识储备<br><a id="more"></a><br>这一次尝试Springboot+dubbo+zookeeper+radis。</p>
+        <p>最近看微服务与分布式挺火的，自己做一个demo，作为知识储备<br><a id="more"></a><br><br>这一次尝试Springboot+dubbo+zookeeper+radis。</p>
 <h4 id="什么是Springboot？"><a href="#什么是Springboot？" class="headerlink" title="什么是Springboot？"></a>什么是Springboot？</h4><blockquote>
 <p>由其设计目的来说，是为了简化新Spring应用的初始搭建及开发过程。（我们都大概体会过那种痛苦：没有享受大脑风暴流传指尖自由构建小世界的快感，而是模式化重复copy）现在，Springboot提供特定的方式配置，使开发人员不再定义样板化配置。</p>
 </blockquote>
 <p>从字面来说，boot有”启动”之意，所以，Springboot说到底也就是启动Spring项目的工具而已，由根本说来，Springboot就是一些库的集合可以被任意项目构建系统所使用。</p>
-<h5 id="Springboot可以做什么？"><a href="#Springboot可以做什么？" class="headerlink" title="Springboot可以做什么？"></a>Springboot可以做什么？</h5><p>它不是一个新框架，而是对原有的spring的一个封装，所以，以前spring什么功能，Springboot照样做。<br><br>Springboot是一个非常好的微服务框架，用它可以快速搭建一个系统。当然，奕可以使用spring cloud（based on Springboot的云应用开发工具）搭建分布式网站。（在电商实战里有具体说明）</p>
+<h5 id="Springboot可以做什么？"><a href="#Springboot可以做什么？" class="headerlink" title="Springboot可以做什么？"></a>Springboot可以做什么？</h5><p>它不是一个新框架，而是对原有的spring的一个封装，所以，以前spring什么功能，Springboot照样做。<br><br>Springboot是一个非常好的微服务框架，用它可以快速搭建一个系统。当然，也可以使用spring cloud（based on Springboot的云应用开发工具）搭建分布式网站。（在电商实战里有具体说明）</p>
 <h4 id="什么是zookeeper？"><a href="#什么是zookeeper？" class="headerlink" title="什么是zookeeper？"></a>什么是zookeeper？</h4><p>说实话，一开始听到这个我是蒙圈的，”动物管理员”（？？？）竟然有人取这个名字，比我听过Java Android名字来历更雾。好的吧，也不蒙你了，实际上，它就是<b>动物管理员</b>！！</p>
 <blockquote>
 <p>zookeeper用来管理大象（Hadoop）、小蜜蜂（Hive）、小猪（Pig），（？？？怎么那么多动物？不过目前我也只是知道Hadoop是一个大数据框架，其他的咋接触呢，以后再总结吧 (＠_＠ ;) ）</p>
@@ -439,8 +462,17 @@
 <li>单点故障的风险增加了，因为热点服务的访问量很高，如果这时候此集群服务器的负载均衡器宕机了，那么此服务失效（难以想象(＃°Д°) ）</li>
 </ol>
 </blockquote>
-<p>好，其实都有办法。<br><br>第一、自己开发程序解决，但只是降低复杂度，并没有实际解决。<br><br>第二、可以通过双机高可用部署方案，使用另一台nginx负载均衡服务器随时待命，只是成本较高。（没有哪个商家愿意如此吧，简直拔我的腿毛！）<br></p>
+<p>好，其实都有办法。<br><br>第一、自己开发程序解决，但只是降低复杂度，并没有实际解决。<br><br>第二、可以通过双机高可用部署方案，使用另一台nginx负载均衡服务器随时待命，只是成本较高。（如果我是老板，我是决计不会这样的，因为这简直是在拔我的腿毛！）<br></p>
 <p>那么，到底咋搞？<br><br>此时有人提出了用 ZooKeeper 作为负载均衡的方案。<br></p>
+<p>终于进入了zookeeper说明？（我也是废话够多的。。(￣▽￣)” ）<br></p>
+<p>zookeeper 是一种分布式应用所设计的高可用，高性能切一致的开源协调服务，它提供一项基本服务：<b>分布式锁</b>。老实说，称为锁我不太明白，我在理解消化后，就认为它是一个<b>协调器</b>，所以，其总称在我的脑子里应该是：<b>分布式协调器</b>（emmm这个我前面貌似说过…）。<br><br>网络是不稳定的，可能进程繁忙，网络抖动…所以，这就有赖于zookeeper的性能（机制）：数据结构（Znode）+ 原语 + 通知机制（watcher）。这儿就不大仔细分析了，下面直接开整<br></p>
+<p>老样子，还是需要安装客户端，从镜像文件中选取自己所需的版本：有三种可选择。</p>
+<ol>
+<li>单机模式：Zookeeper只运行在一台服务器上，适合测试环境；</li>
+<li>伪集群模式：就是在一台物理机上运行多个Zookeeper 实例；</li>
+<li>集群模式：Zookeeper运行于一个集群上，适合生产环境，这个计算机集群被称为一个“集合体”（ensemble）。</li>
+</ol>
+<p>下载完成后，当然是配置环境变量啦，具体教程网上都有资源，自行体验。</p>
 
       
     </div>
@@ -468,6 +500,18 @@
      
 
     <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/微服务框架/" rel="tag"># 微服务框架</a>
+          
+            <a href="/tags/分布式/" rel="tag"># 分布式</a>
+          
+            <a href="/tags/ZooKeeper/" rel="tag"># ZooKeeper</a>
+          
+            <a href="/tags/dubbo/" rel="tag"># dubbo</a>
+          
+        </div>
       
 
       
@@ -578,7 +622,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-count">2</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -589,7 +633,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-count">7</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -677,7 +721,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">3.7k</span>
+    <span title="Site words total count">4.0k</span>
   
 </div>
 
